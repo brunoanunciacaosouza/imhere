@@ -6,6 +6,7 @@ import {
   View,
   TouchableOpacity,
   FlatList,
+  Alert,
 } from "react-native";
 
 import { styles } from "../styles";
@@ -19,6 +20,22 @@ export default function Home() {
     setParticipants((prevState) => [...prevState, participantName]);
 
     setParticipantName("");
+  }
+
+  function handleParticipantRemove(name: string) {
+    Alert.alert("Remover", `Remover o participante ${name}`, [
+      {
+        text: "Sim",
+        onPress: () =>
+          setParticipants((prevState) =>
+            prevState.filter((participant) => participant !== name)
+          ),
+      },
+      {
+        text: "Não",
+        style: "cancel",
+      },
+    ]);
   }
 
   return (
@@ -43,7 +60,12 @@ export default function Home() {
       <FlatList
         data={participants}
         keyExtractor={(item) => item}
-        renderItem={({ item }) => <Participant name={item} />}
+        renderItem={({ item }) => (
+          <Participant
+            name={item}
+            onRemove={() => handleParticipantRemove(item)}
+          />
+        )}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={() => (
           <Text style={styles.listEmptyText}>

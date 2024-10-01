@@ -17,6 +17,10 @@ export default function Home() {
   const [participantName, setParticipantName] = useState("");
 
   function handleParticipantAdd() {
+    if (participants.includes(participantName)) {
+      return Alert.alert("Participante já está presente");
+    }
+
     setParticipants((prevState) => [...prevState, participantName]);
 
     setParticipantName("");
